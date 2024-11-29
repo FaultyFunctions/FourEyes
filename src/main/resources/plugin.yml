@@ -1,0 +1,7 @@
+name: FourEyes
+version: '1.0.0'
+main: dev.faultyfunctions.fourEyes.FourEyes
+api-version: '1.20.6'
+prefix: FourEyes
+authors: [ Faulty ]
+description: A plugin that shows you book titles from a chiseled bookshelf when you look at the books inside.
