@@ -1,5 +1,5 @@
 name: FourEyes
-version: '1.0.0'
+version: '1.1.0'
 main: dev.faultyfunctions.fourEyes.FourEyes
 api-version: '1.20.6'
 prefix: FourEyes

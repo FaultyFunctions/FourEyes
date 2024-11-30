@@ -1,5 +1,6 @@
 package dev.faultyfunctions.fourEyes.tasks
 
+import dev.faultyfunctions.fourEyes.FourEyes
 import dev.faultyfunctions.fourEyes.utils.Utils.capitalizeWords
 import dev.faultyfunctions.fourEyes.utils.Utils.getTargetBlock
 import dev.faultyfunctions.fourEyes.utils.Utils.intToRoman
@@ -36,7 +37,7 @@ class ChiseledBookshelfTask() : BukkitRunnable() {
 				val rayTraceBlockFace: BlockFace = lookRayTrace.hitBlockFace ?: return
 				val blockDirectional: Directional = shelf.blockData as Directional
 				if (blockDirectional.facing != rayTraceBlockFace) {
-					player.sendActionBar(Component.text(""))
+					FourEyes.plugin.adventure().player(player).sendActionBar(Component.text(""))
 					return
 				}
 
@@ -47,14 +48,14 @@ class ChiseledBookshelfTask() : BukkitRunnable() {
 				val shelfInventory: ChiseledBookshelfInventory = shelf.inventory
 				val bookInSlot: ItemStack? = shelfInventory.getItem(slot) // RETURN IF THERE IS NO BOOK
 				if (bookInSlot == null) {
-					player.sendActionBar(Component.text(""))
+					FourEyes.plugin.adventure().player(player).sendActionBar(Component.text(""))
 					return
 				}
-				val bookInSlotMeta: ItemMeta = bookInSlot.itemMeta
+				val bookInSlotMeta: ItemMeta? = bookInSlot.itemMeta
 
 				// SEND PLAYER THE TITLE OF THE BOOK IF IT HAS A TITLE
 				if (bookInSlotMeta is BookMeta && bookInSlotMeta.hasTitle() && bookInSlotMeta.hasAuthor()) {
-					player.sendActionBar(Component.text(bookInSlotMeta.title.toString() + " by " + bookInSlotMeta.author.toString()))
+					FourEyes.plugin.adventure().player(player).sendActionBar(Component.text(bookInSlotMeta.title.toString() + " by " + bookInSlotMeta.author.toString()))
 				} else if (bookInSlotMeta is EnchantmentStorageMeta) {
 					var bookTitle: TextComponent.Builder = Component.text().append(Component.text("Enchanted Book", NamedTextColor.YELLOW)).append(Component.text(" ("))
 					var i = 0
@@ -68,11 +69,13 @@ class ChiseledBookshelfTask() : BukkitRunnable() {
 						++i
 					}
 					bookTitle = bookTitle.append(Component.text(")"))
-					player.sendActionBar(bookTitle.build())
-				} else if (bookInSlotMeta.hasDisplayName()) {
-					bookInSlotMeta.displayName()?.let { player.sendActionBar(it) }
-				} else {
-					player.sendActionBar(Component.text(""))
+					FourEyes.plugin.adventure().player(player).sendActionBar(bookTitle.build())
+				} else if (bookInSlotMeta != null) {
+					if (bookInSlotMeta.hasDisplayName()) {
+						FourEyes.plugin.adventure().player(player).sendActionBar(Component.text(bookInSlotMeta.displayName))
+					} else {
+						FourEyes.plugin.adventure().player(player).sendActionBar(Component.text(""))
+					}
 				}
 			}
 		}
